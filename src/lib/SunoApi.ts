@@ -897,6 +897,31 @@ class SunoApi {
 
     return response.data;
   }
+
+  /**
+   * Retrieves comments for a specific clip from Suno API.
+   * @param clipId The ID of the clip to retrieve comments for.
+   * @param order The order to sort comments by (default: 'newest').
+   * @returns A promise that resolves to the comments data from Suno.
+   */
+  public async getClipComments(clipId: string, order: string = 'newest'): Promise<any> {
+    await this.keepAlive(false);
+    
+    const url = new URL(`${SunoApi.BASE_URL}/api/gen/${clipId}/comments`);
+    url.searchParams.append('order', order);
+    
+    logger.info(`Fetching clip comments: ${url.href}`);
+    
+    const response = await this.client.get(url.href, {
+      timeout: 10000 // 10 seconds timeout
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error response: ' + response.statusText);
+    }
+
+    return response.data;
+  }
 }
 
 export const sunoApi = async (cookie?: string) => {

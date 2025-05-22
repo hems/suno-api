@@ -158,6 +158,7 @@ Suno API currently mainly implements the following APIs:
 - `/api/generate_stems`: Make stem tracks (separate audio and music track)
 - `/api/get_aligned_lyrics`: Get list of timestamps for each word in the lyrics
 - `/api/clip`: Get clip information based on ID passed as query parameter `id`
+- `/api/clip/{id}/comments`: Get comments for a specific clip with optional sorting
 - `/api/concat`: Generate the whole song from extensions
 - `/api/projects`: Get a list of projects
 - `/api/projects/{id}`: Get a specific project by ID with options to hide disliked content
@@ -210,6 +211,11 @@ def get_quota_information():
 
 def get_clip(clip_id):
     url = f"{base_url}/api/clip?id={clip_id}"
+    response = requests.get(url)
+    return response.json()
+
+def get_clip_comments(clip_id, order='newest'):
+    url = f"{base_url}/api/clip/{clip_id}/comments?order={order}"
     response = requests.get(url)
     return response.json()
 
@@ -297,6 +303,12 @@ async function getQuotaInformation() {
 
 async function getClipInformation(clipId) {
   const url = `${baseUrl}/api/clip?id=${clipId}`;
+  const response = await axios.get(url);
+  return response.data;
+}
+
+async function getClipComments(clipId, order = 'newest') {
+  const url = `${baseUrl}/api/clip/${clipId}/comments?order=${order}`;
   const response = await axios.get(url);
   return response.data;
 }

@@ -695,6 +695,110 @@
         }
       }
     },
+    "/api/clip/{id}/comments": {
+      "get": {
+        "summary": "Get comments for a specific clip.",
+        "description": "Retrieve comments for a specific clip using the provided clip ID as a path parameter.",
+        "tags": ["default"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Clip ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "description": "Sort order for comments (defaults to 'newest')",
+            "schema": {
+              "type": "string",
+              "default": "newest",
+              "enum": ["newest", "oldest", "popular"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Comment ID"
+                          },
+                          "text": {
+                            "type": "string",
+                            "description": "Comment text"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "User ID"
+                              },
+                              "display_name": {
+                                "type": "string",
+                                "description": "User display name"
+                              },
+                              "image_url": {
+                                "type": "string",
+                                "description": "User profile image URL"
+                              }
+                            }
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "description": "Comment creation date and time"
+                          },
+                          "upvote_count": {
+                            "type": "integer",
+                            "description": "Number of upvotes"
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "description": "Total number of comments"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/concat": {
       "post": {
         "summary": "Generate the whole song from extensions.",
