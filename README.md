@@ -159,6 +159,7 @@ Suno API currently mainly implements the following APIs:
 - `/api/get_aligned_lyrics`: Get list of timestamps for each word in the lyrics
 - `/api/clip`: Get clip information based on ID passed as query parameter `id`
 - `/api/concat`: Generate the whole song from extensions
+- `/api/projects`: Get a list of projects
 ```
 
 You can also specify the cookies in the `Cookie` header of your request, overriding the default cookies in the `SUNO_COOKIE` environment variable. This comes in handy when, for example, you want to use multiple free accounts at the same time.

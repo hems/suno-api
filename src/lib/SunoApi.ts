@@ -847,6 +847,29 @@ class SunoApi {
 
     return response.data;
   }
+
+  /**
+   * Retrieves user's projects from Suno API.
+   * @param page An optional page number to retrieve projects from (default: 1).
+   * @returns A promise that resolves to the projects data from Suno.
+   */
+  public async projects(page: number = 1): Promise<any> {
+    await this.keepAlive(false);
+    
+    const url = `${SunoApi.BASE_URL}/api/project/me?page=${page}`;
+    
+    logger.info(`Fetching projects data: ${url}`);
+    
+    const response = await this.client.get(url, {
+      timeout: 10000 // 10 seconds timeout
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error response: ' + response.statusText);
+    }
+
+    return response.data;
+  }
 }
 
 export const sunoApi = async (cookie?: string) => {

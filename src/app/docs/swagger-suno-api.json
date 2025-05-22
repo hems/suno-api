@@ -378,6 +378,87 @@
         }
       }
     },
+    "/api/projects": {
+      "get": {
+        "summary": "Get user's projects",
+        "description": "Retrieves the user's projects from Suno API.",
+        "tags": ["default"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page number (defaults to 1)",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Project ID"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Project name"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "description": "Creation date and time"
+                          },
+                          "last_modified": {
+                            "type": "string",
+                            "description": "Last modification date and time"
+                          }
+                        }
+                      }
+                    },
+                    "total_results": {
+                      "type": "integer",
+                      "description": "Total number of projects"
+                    },
+                    "current_page": {
+                      "type": "integer",
+                      "description": "Current page number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/get_limit": {
       "get": {
         "summary": "Get quota information.",
