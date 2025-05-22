@@ -870,6 +870,33 @@ class SunoApi {
 
     return response.data;
   }
+
+  /**
+   * Retrieves a specific project by ID from Suno API.
+   * @param projectId The ID of the project to retrieve.
+   * @param hideDisliked Whether to hide disliked content (default: false).
+   * @param page An optional page number to retrieve project data from (default: 1).
+   * @returns A promise that resolves to the project data from Suno.
+   */
+  public async getProject(projectId: string, hideDisliked: boolean = false, page: number = 1): Promise<any> {
+    await this.keepAlive(false);
+    
+    const url = new URL(`${SunoApi.BASE_URL}/api/project/${projectId}`);
+    url.searchParams.append('hide_disliked', hideDisliked ? 'true' : 'false');
+    url.searchParams.append('page', page.toString());
+    
+    logger.info(`Fetching project data: ${url.href}`);
+    
+    const response = await this.client.get(url.href, {
+      timeout: 10000 // 10 seconds timeout
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error response: ' + response.statusText);
+    }
+
+    return response.data;
+  }
 }
 
 export const sunoApi = async (cookie?: string) => {
