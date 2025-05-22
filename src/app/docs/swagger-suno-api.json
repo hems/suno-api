@@ -493,6 +493,15 @@
               "type": "number",
               "default": 1
             }
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "description": "Search query to filter clips in the project",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

@@ -876,14 +876,24 @@ class SunoApi {
    * @param projectId The ID of the project to retrieve.
    * @param hideDisliked Whether to hide disliked content (default: false).
    * @param page An optional page number to retrieve project data from (default: 1).
+   * @param query An optional search query to filter clips in the project.
    * @returns A promise that resolves to the project data from Suno.
    */
-  public async getProject(projectId: string, hideDisliked: boolean = false, page: number = 1): Promise<any> {
+  public async getProject(
+    projectId: string, 
+    hideDisliked: boolean = false, 
+    page: number = 1,
+    query?: string
+  ): Promise<any> {
     await this.keepAlive(false);
     
     const url = new URL(`${SunoApi.BASE_URL}/api/project/${projectId}`);
     url.searchParams.append('hide_disliked', hideDisliked ? 'true' : 'false');
     url.searchParams.append('page', page.toString());
+    
+    if (query) {
+      url.searchParams.append('query', query);
+    }
     
     logger.info(`Fetching project data: ${url.href}`);
     

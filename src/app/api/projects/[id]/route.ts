@@ -12,12 +12,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       const url = new URL(req.url);
       const hideDisliked = url.searchParams.get('hide_disliked') === 'true';
       const page = url.searchParams.get('page') || '1';
+      const query = url.searchParams.get('query') || undefined;
       const cookie = (await cookies()).toString();
 
       const data = await (await sunoApi(cookie)).getProject(
         projectId,
         hideDisliked,
-        parseInt(page)
+        parseInt(page),
+        query
       );
 
       return new NextResponse(JSON.stringify(data), {

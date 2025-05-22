@@ -161,7 +161,7 @@ Suno API currently mainly implements the following APIs:
 - `/api/clip/{id}/comments`: Get comments for a specific clip with optional sorting
 - `/api/concat`: Generate the whole song from extensions
 - `/api/projects`: Get a list of projects
-- `/api/projects/{id}`: Get a specific project by ID with options to hide disliked content
+- `/api/projects/{id}`: Get a specific project by ID with options to hide disliked content and search clips
 ```
 
 You can also specify the cookies in the `Cookie` header of your request, overriding the default cookies in the `SUNO_COOKIE` environment variable. This comes in handy when, for example, you want to use multiple free accounts at the same time.
@@ -230,8 +230,10 @@ def get_projects(page=1):
     response = requests.get(url)
     return response.json()
 
-def get_project(project_id, hide_disliked=False, page=1):
+def get_project(project_id, hide_disliked=False, page=1, query=None):
     url = f"{base_url}/api/projects/{project_id}?hide_disliked={str(hide_disliked).lower()}&page={page}"
+    if query:
+        url += f"&query={requests.utils.quote(query)}"
     response = requests.get(url)
     return response.json()
 
@@ -319,8 +321,11 @@ async function getProjects(page = 1) {
   return response.data;
 }
 
-async function getProject(projectId, hideDisliked = false, page = 1) {
-  const url = `${baseUrl}/api/projects/${projectId}?hide_disliked=${hideDisliked}&page=${page}`;
+async function getProject(projectId, hideDisliked = false, page = 1, query = null) {
+  let url = `${baseUrl}/api/projects/${projectId}?hide_disliked=${hideDisliked}&page=${page}`;
+  if (query) {
+    url += `&query=${encodeURIComponent(query)}`;
+  }
   const response = await axios.get(url);
   return response.data;
 }
